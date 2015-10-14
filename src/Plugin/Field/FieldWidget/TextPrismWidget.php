@@ -10,6 +10,7 @@ namespace Drupal\prism\Plugin\Field\FieldWidget;
 use Drupal\Core\Field\FieldItemListInterface;
 use Drupal\Core\Field\WidgetBase;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\prism\PrismConfig;
 
 /**
  * Plugin implementation of the 'text_prism' widget.
@@ -72,22 +73,10 @@ class TextPrismWidget extends WidgetBase {
    * {@inheritdoc}
    */
   public function formElement(FieldItemListInterface $items, $delta, array $element, array &$form, FormStateInterface $form_state) {
-    $languages = array(
-        'http' => 'HTTP',
-        'groovy' => 'Groovy',
-        'sql' => 'SQL',
-        'python' => 'Python',
-        'cplusplus' => 'C++',
-        'c' => 'C',
-        'bash' => 'Bash',
-        'sass' => 'SASS',
-        'coffeescript' => 'CoffeeScript',
-        'php' => 'PHP',
-        'java' => 'Java',
-        'javascript' => 'JavaScript',
-        'css' => 'CSS',
-        'markup' => 'Markup',
-      );
+    $config = \Drupal::config('prism.settings');
+    $all_languages = PrismConfig::getLanguages();
+    $config_language = array_filter($config->get('languages'));
+    $languages = array_intersect_key($all_languages, $config_language);
 
     $element['value'] = $element + array(
         '#type' => 'textarea',
