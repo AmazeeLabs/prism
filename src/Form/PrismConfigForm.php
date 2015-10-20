@@ -65,9 +65,7 @@ class PrismConfigForm extends ConfigFormBase {
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
     parent::submitForm($form, $form_state);
-
-    dpm($form_state->getValue('languages'));
-
+    
     $this->config('prism.settings')
       ->set('languages', $form_state->getValue('languages'))
       ->save();
